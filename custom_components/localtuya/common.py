@@ -343,6 +343,11 @@ class TuyaDevice(pytuya.TuyaListener, pytuya.ContextualLogger):
     @callback
     def status_updated(self, status):
         """Device updated status."""
+
+        # Fix for Tuya API inconsistency
+        if status.get("21", "") == "color":
+            status["21"] = "colour"
+
         self._status.update(status)
         self._dispatch_status()
 
